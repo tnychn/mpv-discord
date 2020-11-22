@@ -1,0 +1,4 @@
+.idea/
+*.zip
+pack.sh
+build.sh

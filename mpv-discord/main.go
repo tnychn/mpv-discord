@@ -76,15 +76,15 @@ func getActivity() (activity discordrpc.Activity, err error) {
 	// Small Image
 	buffering := getProperty("paused-for-cache")
 	pausing := getProperty("pause")
-	loopingFile := getProperty("loop-file")
-	loopingPlaylist := getProperty("loop-playlist")
+	loopingFile := getPropertyString("loop-file")
+	loopingPlaylist := getPropertyString("loop-playlist")
 	if buffering != nil && buffering.(bool) {
 		activity.SmallImageKey = "buffer"
 		activity.SmallImageText = "Buffering"
 	} else if pausing != nil && pausing.(bool) {
 		activity.SmallImageKey = "pause"
 		activity.SmallImageText = "Paused"
-	} else if loopingFile != nil && loopingPlaylist != nil {
+	} else if loopingFile != "no" || loopingPlaylist != "no" {
 		activity.SmallImageKey = "loop"
 		activity.SmallImageText = "Looping"
 	} else {

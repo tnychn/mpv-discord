@@ -13,7 +13,7 @@ if options.binary_path == "" then
     os.exit(1)
 end
 
-version = "1.0.0"
+version = "1.0.1"
 msg.info(("Using version: %s"):format(version))
 
 pid = utils.getpid()

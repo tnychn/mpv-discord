@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"net"
+	"time"
 
 	"github.com/tnychn/mpv-discord/discordrpc/payloads"
 	"github.com/tnychn/mpv-discord/discordrpc/pipe"
@@ -63,6 +64,10 @@ func (c *Client) read() error {
 }
 
 func (c *Client) send(opcode int, payload payloads.Payload) error {
+	d := time.Now().Add(time.Second * 3)
+	if err := c.socket.SetDeadline(d); err != nil {
+		return err
+	}
 	// encode data into JSON format
 	data, err := json.Marshal(payload)
 	if err != nil {

@@ -16,7 +16,7 @@ var client *mpvrpc.Client
 var presence *discordrpc.Presence
 
 func init() {
-	log.SetFlags(log.Ltime | log.Lmsgprefix)
+	log.SetFlags(log.Lmsgprefix)
 	log.SetPrefix("[discord] ")
 
 	client = mpvrpc.NewClient(os.Args[1])
@@ -109,37 +109,69 @@ func getActivity() (activity discordrpc.Activity, err error) {
 	return
 }
 
-func main() {
-	if err := presence.Open(); err != nil {
-		log.Fatalln(err)
-	}
-	defer func() {
-		if err := presence.Close(); err != nil {
-			log.Fatalln(err)
-		}
-	}()
-
+func openClient() {
 	if err := client.Open(); err != nil {
 		log.Fatalln(err)
 	}
+	log.Println("(mpv-ipc): connected")
+}
+
+func openPresence() {
+	// try until success
+	for range time.Tick(time.Second) {
+		if client.IsClosed() {
+			return // stop trying when mpv shuts down
+		}
+		if err := presence.Open(); err == nil {
+			break
+		}
+	}
+	log.Println("(discord-ipc): connected")
+}
+
+func main() {
 	defer func() {
-		if err := client.Close(); err != nil {
-			log.Fatalln(err)
+		if !client.IsClosed() {
+			if err := client.Close(); err != nil {
+				log.Fatalln(err)
+			}
+			log.Println("(mpv-ipc): disconnected")
+		}
+		if !presence.IsClosed() {
+			if err := presence.Close(); err != nil {
+				log.Fatalln(err)
+			}
+			log.Println("(discord-ipc): disconnected")
 		}
 	}()
+
+	openClient()
+	go openPresence()
 
 	for range time.Tick(time.Second) {
 		activity, err := getActivity()
 		if err != nil {
 			if errors.Is(err, syscall.EPIPE) {
 				break
+			} else {
+				log.Println(err)
+				continue
 			}
-			log.Println(err)
+		}
+		if presence.IsClosed() {
 			continue
 		}
 		if err = presence.Update(activity); err != nil {
-			log.Println(err)
-			continue
+			if errors.Is(err, syscall.EPIPE) {
+				// close it before retrying
+				if err = presence.Close(); err != nil {
+					log.Fatalln(err)
+				}
+				log.Println("(discord-ipc): reconnecting...")
+				go openPresence()
+			} else {
+				log.Println(err)
+			}
 		}
 	}
 }

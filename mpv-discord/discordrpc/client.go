@@ -100,3 +100,5 @@ func (c *Client) Close() error {
 	}()
 	return c.socket.Close()
 }
+
+func (c *Client) IsClosed() bool { return c.socket == nil }

@@ -16,9 +16,9 @@ type Client struct {
 	reqid  int
 	socket net.Conn
 
-	mutex       *sync.Mutex
-	qchan       chan struct{}
-	requests    map[int]*request
+	mutex    *sync.Mutex
+	qchan    chan struct{}
+	requests map[int]*request
 	// subscribers map[string]func()
 }
 
@@ -127,3 +127,5 @@ func (c *Client) Close() error {
 	c.qchan <- struct{}{}
 	return c.socket.Close()
 }
+
+func (c *Client) IsClosed() bool { return c.socket == nil }

@@ -13,8 +13,8 @@ if options.binary_path == "" then
     os.exit(1)
 end
 
-version = "1.0.1"
-msg.info(("Using version: %s"):format(version))
+version = "1.1.0"
+msg.info(("mpv-discord v%s by tnychn"):format(version))
 
 pid = utils.getpid()
 socket_path = ("/tmp/mpv-discord-%s"):format(pid)
@@ -25,7 +25,7 @@ mp.register_event("start-file", function()
     if options.active and not launched then
         io.popen(options.binary_path .. " " .. pid)
         launched = true
-        msg.info(("Launched (%s)"):format(socket_path))
+        msg.info(("(mpv-ipc): %s"):format(socket_path))
     end
 end)
 

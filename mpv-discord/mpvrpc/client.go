@@ -117,6 +117,9 @@ func (c *Client) GetPropertyString(key string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if value == nil {
+		value = ""
+	}
 	return value.(string), nil
 }
 

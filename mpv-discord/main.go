@@ -101,10 +101,12 @@ func getActivity() (activity discordrpc.Activity, err error) {
 	}
 
 	// Timestamps
-	if timeRemaining := getPropertyString("time-remaining"); timeRemaining != "" {
-		d, _ := time.ParseDuration(timeRemaining + "s")
-		endTime := time.Now().Add(d)
-		activity.Timestamps = &discordrpc.ActivityTimestamps{End: &endTime}
+	if pausing != nil && !pausing.(bool) {
+		if timeRemaining := getPropertyString("time-remaining"); timeRemaining != "" {
+			d, _ := time.ParseDuration(timeRemaining + "s")
+			endTime := time.Now().Add(d)
+			activity.Timestamps = &discordrpc.ActivityTimestamps{End: &endTime}
+		}
 	}
 	return
 }

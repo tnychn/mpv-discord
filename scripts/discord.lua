@@ -13,7 +13,7 @@ if options.binary_path == "" then
     os.exit(1)
 end
 
-version = "1.1.0"
+version = "1.2.0"
 msg.info(("mpv-discord v%s by tnychn"):format(version))
 
 pid = utils.getpid()

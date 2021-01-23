@@ -28,7 +28,6 @@ func getActivity() (activity discordrpc.Activity, err error) {
 		prop, err = client.GetProperty(key)
 		return
 	}
-
 	getPropertyString := func(key string) (prop string) {
 		prop, err = client.GetPropertyString(key)
 		return

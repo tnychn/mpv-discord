@@ -44,7 +44,7 @@ func (c *Client) readloop() {
 		case <-c.qchan:
 			break
 		default:
-			// # in case the client is closed already
+			// in case the client is closed already
 			if c.socket == nil {
 				return
 			}
@@ -85,7 +85,8 @@ func (c *Client) write(req *request) (*request, error) {
 	if err != nil {
 		return nil, err
 	}
-	if _, err = c.socket.Write(append(data, '\n')); err != nil {
+	_, err = c.socket.Write(append(data, '\n'))
+	if err != nil {
 		return nil, err
 	}
 	c.mutex.Lock()

@@ -9,7 +9,7 @@ options = {
 opts.read_options(options, "discord")
 
 if options.binary_path == "" then
-    msg.fatal("Missing binary path in config file")
+    msg.fatal("Missing binary path in config file.")
     os.exit(1)
 end
 
@@ -21,8 +21,11 @@ socket_path = ("/tmp/mpv-discord-%s"):format(pid)
 mp.set_property("input-ipc-server", socket_path)
 
 launched = false
-mp.register_event("start-file", function()
+mp.register_event("file-loaded", function()
     if options.active and not launched then
+--         utils.subprocess_detached({
+--             args = { options.binary_path, pid }
+--         })
         io.popen(options.binary_path .. " " .. pid)
         launched = true
         msg.info(("(mpv-ipc): %s"):format(socket_path))
@@ -30,5 +33,5 @@ mp.register_event("start-file", function()
 end)
 
 mp.register_event("shutdown", function()
-    os.remove(socket_path)
+    os.remove(socket_path) -- finish cleanup
 end)

@@ -28,6 +28,11 @@ func NewClient(cid string) *Client {
 }
 
 func (c *Client) read() error {
+	// timeout when blocking for too long
+	d := time.Now().Add(time.Second * 3)
+	if err := c.socket.SetReadDeadline(d); err != nil {
+		return err
+	}
 	// read 1024 bytes data from socket
 	data := make([]byte, 1024)
 	if _, err := c.socket.Read(data); err != nil {
@@ -64,16 +69,12 @@ func (c *Client) read() error {
 }
 
 func (c *Client) send(opcode int, payload payloads.Payload) error {
-	d := time.Now().Add(time.Second * 3)
-	if err := c.socket.SetDeadline(d); err != nil {
-		return err
-	}
 	// encode data into JSON format
 	data, err := json.Marshal(payload)
 	if err != nil {
 		return err
 	}
-	//  form the payload -> [header(opcode,length)][data]
+	// form the payload -> [header(opcode,length)][data]
 	buffer := new(bytes.Buffer)
 	if err = binary.Write(buffer, binary.LittleEndian, int32(opcode)); err != nil {
 		return err

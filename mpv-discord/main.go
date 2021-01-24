@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"syscall"
@@ -154,25 +155,26 @@ func main() {
 		if err != nil {
 			if errors.Is(err, syscall.EPIPE) {
 				break
-			} else {
+			} else if !errors.Is(err, io.EOF) {
 				log.Println(err)
 				continue
 			}
 		}
-		if presence.IsClosed() {
-			continue
-		}
-		if err = presence.Update(activity); err != nil {
-			if errors.Is(err, syscall.EPIPE) {
-				// close it before retrying
-				if err = presence.Close(); err != nil {
-					log.Fatalln(err)
+		if !presence.IsClosed() {
+			go func() {
+				if err = presence.Update(activity); err != nil {
+					if errors.Is(err, syscall.EPIPE) {
+						// close it before retrying
+						if err = presence.Close(); err != nil {
+							log.Fatalln(err)
+						}
+						log.Println("(discord-ipc): reconnecting...")
+						go openPresence()
+					} else if !errors.Is(err, io.EOF) {
+						log.Println(err)
+					}
 				}
-				log.Println("(discord-ipc): reconnecting...")
-				go openPresence()
-			} else {
-				log.Println(err)
-			}
+			}()
 		}
 	}
 }

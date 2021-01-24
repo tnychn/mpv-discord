@@ -2,7 +2,7 @@
 
 cd "$(dirname "$0")" || exit
 
-mpv_dir=$HOME/.config/mpv
+mpv_dir="${MPV_HOME:-$HOME/.config/mpv}"
 scripts_dir=$mpv_dir/scripts
 script_opts_dir=$mpv_dir/script-opts
 

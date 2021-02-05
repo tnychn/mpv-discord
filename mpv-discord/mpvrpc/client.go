@@ -31,8 +31,8 @@ func NewClient(pid string) *Client {
 	return client
 }
 
-func (c *Client) Open() (err error) {
-	c.socket, err = pipe.GetPipeSocket(c.pid)
+func (c *Client) Open(pipe_path string) (err error) {
+	c.socket, err = pipe.GetPipeSocket(pipe_path)
 	go c.readloop()
 	return
 }

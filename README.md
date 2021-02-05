@@ -71,6 +71,8 @@ For Windows, config file is located in where the `mpv.exe` executable is.
 
 * **active** (default: yes): whether to activate at launch (yes/no)
 * **binary_path**: full path to the mpv-discord's binary file
+* **static_ipc**: (default: yes) weather to create a  static icp socket or a dynamic one. Static sockets will be at `/tmp/mpvsocket` on macos/Linux and `.\mpvpipe` on Windows. Dynamic sockets will be created in a subfolder of the current temporary folder. The subfolder is set by **dynamic_ipc_prefix**, and will contain one pipe file for each mpv instance, with the name of the pipe being the PID of the respective mpv process.
+* **dynamic_ipc_prefix** (default: `mpvSockets`): the path to be used for creating dynamic ipc sockets
 
 ## How It Works
 

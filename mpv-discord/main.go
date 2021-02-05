@@ -15,12 +15,15 @@ import (
 
 var client *mpvrpc.Client
 var presence *discordrpc.Presence
+var pipe_path string
 
 func init() {
 	log.SetFlags(log.Lmsgprefix)
 	log.SetPrefix("[discord] ")
 
-	client = mpvrpc.NewClient(os.Args[1])
+	client = mpvrpc.NewClient(os.Args[0])
+	pipe_path = os.Args[1]
+
 	presence = discordrpc.NewPresence("737663962677510245")
 }
 
@@ -112,7 +115,7 @@ func getActivity() (activity discordrpc.Activity, err error) {
 }
 
 func openClient() {
-	if err := client.Open(); err != nil {
+	if err := client.Open(pipe_path); err != nil {
 		log.Fatalln(err)
 	}
 	log.Println("(mpv-ipc): connected")

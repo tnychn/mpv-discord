@@ -30,7 +30,7 @@ end
 msg.info(("(mpv-ipc): %s"):format(socket_path))
 mp.set_property("input-ipc-server", socket_path)
 
-version = "1.2.1"
+version = "1.3.1"
 msg.info(("mpv-discord v%s by tnychn"):format(version))
 
 t = nil

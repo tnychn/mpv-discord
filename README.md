@@ -69,8 +69,14 @@ For OSX and Linux, config file is located in `~/.config/mpv/script-opts`.
 
 For Windows, config file is located in where the `mpv.exe` executable is.
 
-* **active** (default: yes): whether to activate at launch (yes/no)
+* **active** (default: `yes`): whether to activate at launch (yes/no)
 * **binary_path**: full path to the mpv-discord's binary file
+* **socket_path** (default: `/tmp/mpvsocket`):
+  * `use_static_socket_path=yes`: set the full path to the static IPC socket path
+  * `use_static_socket_path=no`: set the full path to the directory placing the IPC socket with a *dynamic name*
+* **use_static_socket_path** (default: `yes`): whether to use static IPC socket path or use *dynamic name* in the path
+
+NOTE: *dynamic name* is in the format of `mpv-discord-1234` where `1234` will be the PID of the mpv instance.
 
 ## How It Works
 

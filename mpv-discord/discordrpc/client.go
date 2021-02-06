@@ -68,29 +68,26 @@ func (c *Client) read() error {
 	return nil
 }
 
-func (c *Client) send(opcode int, payload payloads.Payload) error {
+func (c *Client) send(opcode int, payload payloads.Payload) (err error) {
 	// encode data into JSON format
 	data, err := json.Marshal(payload)
 	if err != nil {
-		return err
+		return
 	}
 	// form the payload -> [header(opcode,length)][data]
 	buffer := new(bytes.Buffer)
-	if err = binary.Write(buffer, binary.LittleEndian, int32(opcode)); err != nil {
-		return err
-	}
-	if err = binary.Write(buffer, binary.LittleEndian, int32(len(data))); err != nil {
-		return err
-	}
+	_ = binary.Write(buffer, binary.LittleEndian, int32(opcode))
+	_ = binary.Write(buffer, binary.LittleEndian, int32(len(data)))
 	if _, err = buffer.Write(data); err != nil {
-		return err
+		return
 	}
 	// send out the payload
 	if _, err = c.socket.Write(buffer.Bytes()); err != nil {
-		return err
+		return
 	}
 	// wait for response and read it
-	return c.read()
+	// return c.read()
+	return nil // NOTE: response error is not handled
 }
 
 func (c *Client) Open() (err error) {

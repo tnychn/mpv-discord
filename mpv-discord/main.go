@@ -13,8 +13,10 @@ import (
 	"github.com/tnychn/mpv-discord/mpvrpc"
 )
 
-var client *mpvrpc.Client
-var presence *discordrpc.Presence
+var (
+	client   *mpvrpc.Client
+	presence *discordrpc.Presence
+)
 
 func init() {
 	log.SetFlags(log.Lmsgprefix)
@@ -120,12 +122,12 @@ func openClient() {
 
 func openPresence() {
 	// try until success
-	for range time.Tick(time.Second) {
+	for range time.Tick(500 * time.Millisecond) {
 		if client.IsClosed() {
 			return // stop trying when mpv shuts down
 		}
 		if err := presence.Open(); err == nil {
-			break
+			break // break when successfully opened
 		}
 	}
 	log.Println("(discord-ipc): connected")

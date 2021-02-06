@@ -12,7 +12,6 @@ import (
 )
 
 type Client struct {
-	pid    string
 	reqid  int
 	socket net.Conn
 
@@ -21,16 +20,16 @@ type Client struct {
 	requests map[int]*request
 }
 
-func NewClient(pid string) *Client {
-	client := &Client{pid: pid, reqid: 1}
+func NewClient() *Client {
+	client := &Client{reqid: 1}
 	client.mutex = new(sync.Mutex)
 	client.qchan = make(chan struct{})
 	client.requests = make(map[int]*request)
 	return client
 }
 
-func (c *Client) Open() (err error) {
-	c.socket, err = pipe.GetPipeSocket(c.pid)
+func (c *Client) Open(path string) (err error) {
+	c.socket, err = pipe.GetPipeSocket(path)
 	go c.readloop()
 	return
 }

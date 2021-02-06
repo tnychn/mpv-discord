@@ -20,18 +20,21 @@ pid = utils.getpid()
 socket_path = ("/tmp/mpv-discord-%s"):format(pid)
 mp.set_property("input-ipc-server", socket_path)
 
+t = nil
 launched = false
 mp.register_event("file-loaded", function()
     if options.active and not launched then
---         utils.subprocess_detached({
---             args = { options.binary_path, pid }
---         })
-        io.popen(options.binary_path .. " " .. pid)
+        t = mp.command_native_async({
+            name = "subprocess",
+            playback_only = false,
+            args = { options.binary_path, tostring(pid) }
+        })
         launched = true
         msg.info(("(mpv-ipc): %s"):format(socket_path))
     end
 end)
 
 mp.register_event("shutdown", function()
+    mp.abort_async_command(t)
     os.remove(socket_path) -- finish cleanup
 end)

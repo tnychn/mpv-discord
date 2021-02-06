@@ -19,8 +19,8 @@ var (
 )
 
 func init() {
+	log.SetOutput(os.Stdout)
 	log.SetFlags(log.Lmsgprefix)
-	log.SetPrefix("[discord] ")
 
 	client = mpvrpc.NewClient(os.Args[1])
 	presence = discordrpc.NewPresence("737663962677510245")

@@ -19,7 +19,6 @@ type Client struct {
 	mutex    *sync.Mutex
 	qchan    chan struct{}
 	requests map[int]*request
-	// subscribers map[string]func()
 }
 
 func NewClient(pid string) *Client {
@@ -27,7 +26,6 @@ func NewClient(pid string) *Client {
 	client.mutex = new(sync.Mutex)
 	client.qchan = make(chan struct{})
 	client.requests = make(map[int]*request)
-	// client.subscribers = make(map[string]func())
 	return client
 }
 
@@ -64,10 +62,7 @@ func (c *Client) readloop() {
 			// handle response
 			c.mutex.Lock()
 			if res.Event != "" {
-				// // FIXME: not working
-				// if cb, ok := c.subscribers[res.Event]; ok {
-				// 	cb()
-				// }
+				// NOTE: event is not handled
 			} else if req, ok := c.requests[res.RequestID]; ok {
 				delete(c.requests, res.RequestID)
 				req.reschan <- &res
@@ -94,12 +89,6 @@ func (c *Client) write(req *request) (*request, error) {
 	c.requests[req.RequestID] = req
 	return req, nil
 }
-
-// func (c *Client) Subscribe(event string, callback func()) {
-// 	c.mutex.Lock()
-// 	defer c.mutex.Unlock()
-// 	c.subscribers[event] = callback
-// }
 
 func (c *Client) Call(cmd string, args ...interface{}) (interface{}, error) {
 	req, err := c.write(newRequest(c.reqid, cmd, args...))

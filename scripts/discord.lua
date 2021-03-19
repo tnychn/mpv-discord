@@ -3,6 +3,7 @@ opts = require("mp.options")
 utils = require("mp.utils")
 
 options = {
+    key = "D",
     active = true,
     binary_path = "",
     socket_path = "/tmp/mpvsocket",
@@ -14,6 +15,9 @@ if options.binary_path == "" then
     msg.fatal("Missing binary path in config file.")
     os.exit(1)
 end
+
+version = "1.3.1"
+msg.info(("mpv-discord v%s by tnychn"):format(version))
 
 socket_path = options.socket_path
 if not options.use_static_socket_path then
@@ -30,26 +34,42 @@ end
 msg.info(("(mpv-ipc): %s"):format(socket_path))
 mp.set_property("input-ipc-server", socket_path)
 
-version = "1.3.1"
-msg.info(("mpv-discord v%s by tnychn"):format(version))
+cmd = nil
 
-t = nil
-launched = false
-mp.register_event("file-loaded", function()
-    if options.active and not launched then
-        t = mp.command_native_async({
+function start()
+    if options.active and cmd == nil then
+        cmd = mp.command_native_async({
             name = "subprocess",
             playback_only = false,
             args = { options.binary_path, socket_path }
         }, function()
             msg.info("launched subprocess")
         end)
-        launched = true
+        mp.osd_message("Discord Rich Presence: Started")
+    end
+end
+
+function stop()
+    mp.abort_async_command(cmd)
+    cmd = nil
+    msg.info("aborted subprocess")
+    mp.osd_message("Discord Rich Presence: Stopped")
+end
+
+mp.register_event("file-loaded", start)
+
+mp.add_key_binding(options.key, "toggle-discord", function()
+    if cmd ~= nil then
+        stop()
+    else
+        start()
     end
 end)
 
 mp.register_event("shutdown", function()
-    mp.abort_async_command(t)
+    if cmd ~= nil then
+        stop()
+    end
     if not options.use_static_socket_path then
         os.remove(socket_path)
     end

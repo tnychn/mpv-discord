@@ -16,7 +16,7 @@ if options.binary_path == "" then
     os.exit(1)
 end
 
-version = "1.3.1"
+version = "1.4.1"
 msg.info(("mpv-discord v%s by tnychn"):format(version))
 
 socket_path = options.socket_path

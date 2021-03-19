@@ -30,6 +30,7 @@
 * 🏁 Cross-platform (embrace my beloved Golang!)
 * ℹ️ Displays song metadata (title, artist, album)
 * ⏳ Displays real time player state and timestamps
+* 🔕 Toggle activation on the fly by key binding
 
 ## Why?
 
@@ -69,6 +70,7 @@ For OSX and Linux, config file is located in `~/.config/mpv/script-opts`.
 
 For Windows, config file is located in where the `mpv.exe` executable is.
 
+* **key** (default: `D`): key binding to toggle activation on the fly
 * **active** (default: `yes`): whether to activate at launch (yes/no)
 * **binary_path**: full path to the mpv-discord's binary file
 * **socket_path** (default: `/tmp/mpvsocket`):

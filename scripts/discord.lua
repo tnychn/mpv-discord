@@ -43,9 +43,7 @@ function start()
             name = "subprocess",
             playback_only = false,
             args = { options.binary_path, socket_path }
-        }, function()
-            msg.info("launched subprocess")
-        end)
+        }, function() msg.info("launched subprocess") end)
         mp.osd_message("Discord Rich Presence: Started")
     end
 end
@@ -60,17 +58,12 @@ end
 mp.register_event("file-loaded", start)
 
 mp.add_key_binding(options.key, "toggle-discord", function()
-    if cmd ~= nil then
-        stop()
-    else
-        start()
-    end
+    if cmd ~= nil then stop()
+    else start() end
 end)
 
 mp.register_event("shutdown", function()
-    if cmd ~= nil then
-        stop()
-    end
+    if cmd ~= nil then stop() end
     if not options.use_static_socket_path then
         os.remove(socket_path)
     end
@@ -82,18 +75,14 @@ if options.autohide_threshold > 0 then
     mp.observe_property("pause", "bool", function(_, value)
         if value == true then
             timer = mp.add_timeout(t, function()
-                if cmd ~= nil then
-                    stop()
-                end
+                if cmd ~= nil then stop() end
             end)
         else
             if timer ~= nil then
                 timer:kill()
                 timer = nil
             end
-            if cmd == nil then
-                start()
-            end
+            if cmd == nil then start() end
         end
     end)
 end

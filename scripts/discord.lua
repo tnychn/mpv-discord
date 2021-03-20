@@ -7,7 +7,8 @@ options = {
     active = true,
     binary_path = "",
     socket_path = "/tmp/mpvsocket",
-    use_static_socket_path = true
+    use_static_socket_path = true,
+    autohide_threshold = 0
 }
 opts.read_options(options, "discord")
 
@@ -74,3 +75,25 @@ mp.register_event("shutdown", function()
         os.remove(socket_path)
     end
 end)
+
+if options.autohide_threshold > 0 then
+    local timer = nil
+    local t = options.autohide_threshold
+    mp.observe_property("pause", "bool", function(_, value)
+        if value == true then
+            timer = mp.add_timeout(t, function()
+                if cmd ~= nil then
+                    stop()
+                end
+            end)
+        else
+            if timer ~= nil then
+                timer:kill()
+                timer = nil
+            end
+            if cmd == nil then
+                start()
+            end
+        end
+    end)
+end

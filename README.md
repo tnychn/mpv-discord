@@ -31,6 +31,7 @@
 * ℹ️ Displays song metadata (title, artist, album)
 * ⏳ Displays real time player state and timestamps
 * 🔕 Toggle activation on the fly by key binding
+* 👻 Automatically hide when player is paused
 
 ## Why?
 
@@ -71,12 +72,13 @@ For OSX and Linux, config file is located in `~/.config/mpv/script-opts`.
 For Windows, config file is located in where the `mpv.exe` executable is.
 
 * **key** (default: `D`): key binding to toggle activation on the fly
-* **active** (default: `yes`): whether to activate at launch (yes/no)
+* **active** (default: `yes`): whether to activate at launch
 * **binary_path**: full path to the mpv-discord's binary file
 * **socket_path** (default: `/tmp/mpvsocket`):
   * `use_static_socket_path=yes`: set the full path to the static IPC socket path
   * `use_static_socket_path=no`: set the full path to the directory placing the IPC socket with a *dynamic name*
 * **use_static_socket_path** (default: `yes`): whether to use static IPC socket path or use *dynamic name* in the path
+* **autohide_threshold** (default: `0`): time in seconds before hiding the presence once player is paused (`0` is off)
 
 NOTE: *dynamic name* is in the format of `mpv-discord-1234` where `1234` will be the PID of the mpv instance.
 

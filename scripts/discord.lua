@@ -38,12 +38,13 @@ mp.set_property("input-ipc-server", socket_path)
 cmd = nil
 
 function start()
-    if options.active and cmd == nil then
+    if cmd == nil then
         cmd = mp.command_native_async({
             name = "subprocess",
             playback_only = false,
             args = { options.binary_path, socket_path }
-        }, function() msg.info("launched subprocess") end)
+        }, function() end)
+        msg.info("launched subprocess")
         mp.osd_message("Discord Rich Presence: Started")
     end
 end
@@ -55,7 +56,9 @@ function stop()
     mp.osd_message("Discord Rich Presence: Stopped")
 end
 
-mp.register_event("file-loaded", start)
+if options.active then
+    mp.register_event("file-loaded", start)
+end
 
 mp.add_key_binding(options.key, "toggle-discord", function()
     if cmd ~= nil then stop()
@@ -82,7 +85,7 @@ if options.autohide_threshold > 0 then
                 timer:kill()
                 timer = nil
             end
-            if cmd == nil then start() end
+            if options.active and cmd == nil then start() end
         end
     end)
 end

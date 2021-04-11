@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-  <img alt="1" src="./assets/1.png" width="40%" />
-  <img alt="2" src="./assets/2.png" width="40%" />
+  <img alt="1" src="./1.png" width="40%" />
+  <img alt="2" src="./2.png" width="40%" />
 </p>
 
 <p align="center">

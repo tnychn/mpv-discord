@@ -16,6 +16,10 @@ if options.binary_path == "" then
     msg.fatal("Missing binary path in config file.")
     os.exit(1)
 end
+if not utils.file_info(options.binary_path) then
+    msg.fatal("The specified binary path does not exist.")
+    os.exit(1)
+end
 
 version = "1.5.0"
 msg.info(("mpv-discord v%s by tnychn"):format(version))

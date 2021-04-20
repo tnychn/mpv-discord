@@ -23,7 +23,7 @@ func init() {
 	log.SetFlags(log.Lmsgprefix)
 
 	client = mpvrpc.NewClient()
-	presence = discordrpc.NewPresence("737663962677510245")
+	presence = discordrpc.NewPresence(os.Args[2])
 }
 
 func getActivity() (activity discordrpc.Activity, err error) {

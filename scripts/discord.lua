@@ -5,6 +5,7 @@ utils = require("mp.utils")
 options = {
     key = "D",
     active = true,
+    client_id = "737663962677510245",
     binary_path = "",
     socket_path = "/tmp/mpvsocket",
     use_static_socket_path = true,
@@ -46,7 +47,11 @@ function start()
         cmd = mp.command_native_async({
             name = "subprocess",
             playback_only = false,
-            args = { options.binary_path, socket_path }
+            args = {
+                options.binary_path,
+                socket_path,
+                options.client_id
+            }
         }, function() end)
         msg.info("launched subprocess")
         mp.osd_message("Discord Rich Presence: Started")

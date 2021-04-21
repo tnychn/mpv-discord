@@ -32,6 +32,7 @@
 * ⏳ Displays real time player state and timestamps
 * 🔕 Toggle activation on the fly by key binding
 * 👻 Automatically hide when player is paused
+* 🖼 Customizable image assets
 
 ## Why?
 
@@ -73,14 +74,40 @@ For Windows, config file is located in where the `mpv.exe` executable is.
 
 * **key** (default: `D`): key binding to toggle activation on the fly
 * **active** (default: `yes`): whether to activate at launch
-* **binary_path**: full path to the mpv-discord's binary file
+* **client_id**: specify your own client ID to [customize](#customization) the images shown in Rich Presence
+* **binary_path**: full path to mpv-discord's binary file
 * **socket_path** (default: `/tmp/mpvsocket`):
   * `use_static_socket_path=yes`: set the full path to the static IPC socket path
   * `use_static_socket_path=no`: set the full path to the directory placing the IPC socket with a *dynamic name*
-* **use_static_socket_path** (default: `yes`): whether to use static IPC socket path or use *dynamic name* in the path
+* **use_static_socket_path** (default: `yes`): whether to use static IPC socket path or *dynamic name* in the path
 * **autohide_threshold** (default: `0`): time in seconds before hiding the presence once player is paused (`0` is off)
 
-NOTE: *dynamic name* is in the format of `mpv-discord-1234` where `1234` will be the PID of the mpv instance.
+*dynamic name* is in the format of `mpv-discord-1234` where `1234` will be the PID of the mpv instance.
+
+## Customization
+
+Go to [Discord Developer Portal](https://discord.com/developers/applications),
+create an application and upload the following art assets with their corresponding asset keys:
+* `mpv`: large image (app logo)
+* `play`: small image used when playing
+* `pause`: small image used when paused
+* `loop`: small image used when playing and looping
+* `buffer`: small image used when buffering
+
+Then, set the `client_id` option in the config to the application ID.
+
+You can also find the already provided client ids and their image assets [here](./assets/).
+
+<p align="center">
+  <img alt="3" src="./3.png" width="30%" />
+  <img alt="4" src="./4.png" width="50%" />
+</p>
+
+<p align="center">
+  <sub>Using mpv-discord with IINA, a media player based on mpv.</sub>
+  <br>
+  <sub>Client ID: 834116350884577280</sub>
+</p>
 
 ## How It Works
 

@@ -39,7 +39,7 @@ func (c *Client) readloop() {
 	for {
 		select {
 		case <-c.qchan:
-			break
+			return
 		default:
 			// in case the client is closed already
 			if c.socket == nil {

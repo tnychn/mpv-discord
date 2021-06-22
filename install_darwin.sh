@@ -16,18 +16,21 @@ if [ ! -d "$script_opts_dir" ]; then
     mkdir "$script_opts_dir"
 fi
 
-echo "Copying config [discord.conf]"
+echo "Copying: discord.conf"
 cp ./script-opts/discord.conf "$script_opts_dir"
 
-echo "Copying script [discord.lua]"
+echo "Copying: discord.lua"
 cp ./scripts/discord.lua "$scripts_dir"
 
-echo "Copying prebuilt darwin binary [mpv-discord]"
+echo "Copying: mpv-discord"
 cp ./bin/darwin/mpv-discord "$mpv_dir"/discord
 
 echo
-echo "Done! Please manually edit the following option in the config file:"
-echo "binary_path=$mpv_dir/discord"
-echo
 echo "Path to mpv directory: $mpv_dir"
 echo "Path to config file: $script_opts_dir/discord.conf"
+echo
+echo "You're almost done!"
+echo "Please manually edit the following option in the config file:"
+echo
+echo "  binary_path=$mpv_dir/discord"
+echo

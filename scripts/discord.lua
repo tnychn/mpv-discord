@@ -17,7 +17,13 @@ if options.binary_path == "" then
     msg.fatal("Missing binary path in config file.")
     os.exit(1)
 end
-if not utils.file_info(options.binary_path) then
+
+function file_exists(path) -- fix(#23): use this instead of utils.file_info
+    local f = io.open(path, "r")
+    if f ~= nil then io.close(f) return true else return false end
+end
+
+if not file_exists(options.binary_path) then
     msg.fatal("The specified binary path does not exist.")
     os.exit(1)
 end

@@ -8,6 +8,7 @@ options = {
     client_id = "737663962677510245",
     binary_path = "",
     socket_path = "/tmp/mpvsocket",
+    dynamic_socket_path_format = "/tmp/mpv-discord-%s",
     use_static_socket_path = true,
     autohide_threshold = 0
 }
@@ -34,11 +35,7 @@ msg.info(("mpv-discord v%s by tnychn"):format(version))
 socket_path = options.socket_path
 if not options.use_static_socket_path then
     pid = utils.getpid()
-    filename = ("mpv-discord-%s"):format(pid)
-    if socket_path == "" then
-        socket_path = "/tmp/" -- default
-    end
-    socket_path = utils.join_path(socket_path, filename)
+    socket_path = (options.dynamic_socket_path_format):format(pid)
 elseif socket_path == "" then
     msg.fatal("Missing socket path in config file.")
     os.exit(1)

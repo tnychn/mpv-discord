@@ -33,7 +33,7 @@ if not file_exists(options.binary_path) then
 	os.exit(1)
 end
 
-local version = "1.6.0"
+local version = "1.6.1"
 msg.info(("mpv-discord v%s by tnychn"):format(version))
 
 local socket_path = options.socket_path

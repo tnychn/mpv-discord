@@ -10,11 +10,16 @@ local options = {
 	socket_path = "/tmp/mpvsocket",
 	use_static_socket_path = true,
 	autohide_threshold = 0,
+	platform_binary_path = "",
 }
 opts.read_options(options, "discord")
 
 if options.binary_path == "" then
-	msg.fatal("Missing binary path in config file.")
+	options.binary_path = mp.command_native({"expand-path", "~~home/"}) .. options.platform_binary_path -- defaults binary_path to the mpv config path
+end
+
+if options.platform_binary_path == "" then
+	msg.fatal("Missing platform binary path in config file.")
 	os.exit(1)
 end
 

@@ -16,20 +16,20 @@ opts.read_options(options, "discord")
 function detect_platform() --function to detect platform
 	local o = {}
 	if mp.get_property_native('options/vo-mmcss-profile', o) ~= o then
-		return 'windows'
+		return "windows"
 	elseif mp.get_property_native('options/input-app-events', o) ~= o then
-		return 'darwin'
+		return "darwin"
 	end
-	return 'linux'
+	return "linux"
 end
 
 if options.binary_path == "" then --sets the binary_path to a default location in mpv config if no location is specified in discord.conf
 	local platform = detect_platform()
-		if platform == 'windows' then
+		if platform == "windows" then
 			options.binary_path = mp.command_native({"expand-path", "~~home/"}) .. "/bin/windows/mpv-discord.exe"
-		elseif platform == 'darwin' then
+		elseif platform == "darwin" then
 			options.binary_path = mp.command_native({"expand-path", "~~home/"}) .. "/bin/darwin/mpv-discord"
-		elseif platform == 'linux' then
+		elseif platform == "linux" then
 			options.binary_path = mp.command_native({"expand-path", "~~home/"}) .. "/bin/linux/mpv-discord"
 		end
 end

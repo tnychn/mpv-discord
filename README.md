@@ -76,13 +76,9 @@ For Windows, config file is located in where the `mpv.exe` executable is.
 * **active** (default: `yes`): whether to activate at launch
 * **client_id**: specify your own client ID to [customize](#customization) the images shown in Rich Presence
 * **binary_path**: full path to mpv-discord's binary file
-* **socket_path** (default: `/tmp/mpvsocket`):
-  * `use_static_socket_path=yes`: set the full path to the static IPC socket path
-  * `use_static_socket_path=no`: set the full path to the directory placing the IPC socket with a *dynamic name*
-* **use_static_socket_path** (default: `yes`): whether to use static IPC socket path or *dynamic name* in the path
+* **socket_path** (default: `/tmp/mpvsocket` or `mpvsocket` in Windows):
+  * You can use `{pid}` to use a dynamic name for the socket path (i.e., `/tmp/mpvsocket_{pid}`)
 * **autohide_threshold** (default: `0`): time in seconds before hiding the presence once player is paused (`0` is off)
-
-*dynamic name* is in the format of `mpv-discord-1234` where `1234` will be the PID of the mpv instance.
 
 ## Customization
 
